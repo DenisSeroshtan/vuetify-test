@@ -3,7 +3,7 @@
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md6 lg4>
         <v-card class="elevation-12">
-          <v-toolbar dark color="light-blue accent-2">
+          <v-toolbar dark :class="colorForm">
             <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
@@ -53,6 +53,11 @@ export default {
           return pattern.test(value) || 'Некорректный e-mail.'
         }
       }
+    }
+  },
+  computed: {
+    colorForm() {
+      return this.valid ? 'success' : 'light-blue accent-2'
     }
   },
   methods: {
