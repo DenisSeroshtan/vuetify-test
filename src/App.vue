@@ -24,7 +24,9 @@
         @click="drawer = !drawer"
         class="hidden-md-and-up"
       ></v-toolbar-side-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title @click="toHome">
+        <span class="pointer">App</span>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn :to="link.url" flat dark v-for="link in links" :key="link.title">
@@ -72,7 +74,18 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    toHome() {
+      this.$router.push({
+        name: 'home'
+      })
+    }
   }
 }
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.pointer {
+  cursor: ponter;
+}
+</style>
