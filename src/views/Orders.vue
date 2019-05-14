@@ -8,6 +8,7 @@
             <v-list-tile-action>
               <v-checkbox
                 :input-value="order.done"
+                :disabled="order.done"
                 @change="setDone(order)"
               ></v-checkbox>
             </v-list-tile-action>
@@ -39,7 +40,7 @@ export default {
           id: 'qwerty',
           name: 'den',
           phone: '8-999-432-23-43',
-          done: true,
+          done: false,
           idAd: '123'
         }
       ]
@@ -53,4 +54,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.theme--light.v-input--is-disabled input {
+  color: red;
+}
+</style>

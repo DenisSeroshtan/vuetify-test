@@ -5,7 +5,13 @@ import store from './store'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-Vue.use(Vuetify)
+import colors from 'vuetify/es5/util/colors'
+
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.lightBlue.accent2
+  }
+})
 
 Vue.config.productionTip = false
 
