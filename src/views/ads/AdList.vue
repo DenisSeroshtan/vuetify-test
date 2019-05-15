@@ -9,7 +9,7 @@
       <v-flex xs12 sm6 v-for="product in products" :key="product.id">
         <v-card class="evalation-6 mb-3">
           <v-layout row>
-            <v-flex xs4 class="no-padding">
+            <v-flex xs4 class="pa-0">
               <v-img :src="product.img" height="100%" />
             </v-flex>
             <v-flex xs8>
@@ -56,8 +56,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.no-padding {
-  padding: 0 !important;
-}
-</style>
