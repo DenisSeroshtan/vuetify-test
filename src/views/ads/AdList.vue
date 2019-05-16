@@ -34,24 +34,9 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      products: [
-        {
-          title: 'title 1',
-          desc: 'some description 2',
-          promo: true,
-          img: 'https://picsum.photos/id/1/1200/400',
-          id: 12
-        },
-        {
-          title: 'title 2',
-          desc: 'some description 1',
-          promo: false,
-          img: 'https://picsum.photos/id/10/1200/400',
-          id: 123
-        }
-      ]
+  computed: {
+    products() {
+      return this.$store.getters['ads/selfProducts']
     }
   }
 }

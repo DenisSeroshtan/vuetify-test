@@ -3,16 +3,10 @@
     <v-layout row>
       <v-flex xs12>
         <v-card>
-          <v-img
-            src="https://picsum.photos/id/1/1200/400"
-            height="300px"
-          ></v-img>
+          <v-img :src="product.img" height="300px"></v-img>
           <v-card-text>
-            <h1 class="text--primary">Title</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam,
-              in?
-            </p>
+            <h1 class="text--primary">{{ product.title }}</h1>
+            <p>{{ product.desc }}</p>
           </v-card-text>
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
@@ -24,3 +18,14 @@
     </v-layout>
   </v-container>
 </template>
+<script>
+export default {
+  props: ['id'],
+  computed: {
+    product() {
+      const id = this.id
+      return this.$store.getters['ads/getProductById'](id)
+    }
+  }
+}
+</script>

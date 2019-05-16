@@ -5,17 +5,23 @@
         <v-flex xs12>
           <v-carousel>
             <v-carousel-item
-              v-for="product in products"
+              v-for="product in promoProducts"
               :key="product.id"
               :src="product.img"
-            ></v-carousel-item>
+            >
+              <router-link
+                :to="{ name: 'ad', params: { id: product.id } }"
+                tag="a"
+                class="slider-wrap"
+              />
+            </v-carousel-item>
           </v-carousel>
         </v-flex>
       </v-layout>
     </v-container>
     <v-container grid-list-lg>
       <v-layout row wrap>
-        <v-flex v-for="product in products" :key="product.id" xs12 sm6 md4>
+        <v-flex v-for="product in products" :key="product.id" xs12 sm6 lg4>
           <v-card>
             <v-img :src="product.img" class="card-img"></v-img>
             <v-card-title primary-title>
@@ -42,33 +48,10 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  data() {
-    return {
-      products: [
-        {
-          title: 'title 1',
-          desc: 'some description 2',
-          promo: true,
-          img: 'https://picsum.photos/id/1/1200/400',
-          id: 12
-        },
-        {
-          title: 'title 2',
-          desc: 'some description 1',
-          promo: false,
-          img: 'https://picsum.photos/id/10/1200/400',
-          id: 123
-        },
-        {
-          title: 'title 3',
-          desc: 'some description 3',
-          promo: false,
-          img: 'https://picsum.photos/id/100/1200/400',
-          id: 1234
-        }
-      ]
-    }
+  computed: {
+    ...mapGetters('ads', ['products', 'promoProducts'])
   }
 }
 </script>
@@ -78,5 +61,14 @@ export default {
 }
 .v-card__actions {
   padding: 16px;
+}
+.slider-wrap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
