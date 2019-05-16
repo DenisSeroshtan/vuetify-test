@@ -69,14 +69,22 @@ export default {
   },
 
   methods: {
+    refreshCreateAd() {
+      ;(this.title = ''), (this.description = ''), (this.promo = '')
+    },
     createAd() {
       if (this.$refs.formLogin.validate()) {
+        const id = Math.floor(Math.random() * 100000)
         const ad = {
-          title: this.titlr,
-          description: this.description,
-          promo: this.promo
+          title: this.title,
+          desc: this.description,
+          promo: this.promo,
+          img:
+            'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200',
+          id
         }
-        console.log(ad)
+        this.$store.dispatch('ads/createAd', ad)
+        this.refreshCreateAd()
       }
     }
   }

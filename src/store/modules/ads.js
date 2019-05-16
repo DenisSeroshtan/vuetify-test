@@ -39,6 +39,14 @@ export default {
       return state.products.find(product => product.id === id)
     }
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    SET_PRODUCT(state, product) {
+      state.products.push(product)
+    }
+  },
+  actions: {
+    createAd({ commit }, product) {
+      commit('SET_PRODUCT', product)
+    }
+  }
 }
