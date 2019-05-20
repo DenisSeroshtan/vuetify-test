@@ -69,9 +69,6 @@ export default {
   },
 
   methods: {
-    refreshCreateAd() {
-      ;(this.title = ''), (this.description = ''), (this.promo = '')
-    },
     createAd() {
       if (this.$refs.formLogin.validate()) {
         const id = Math.floor(Math.random() * 100000)
@@ -84,7 +81,7 @@ export default {
           id
         }
         this.$store.dispatch('ads/createAd', ad)
-        this.refreshCreateAd()
+        this.$refs.formLogin.reset()
       }
     }
   }

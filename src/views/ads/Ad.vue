@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs12>
+      <v-flex xs12 lg8 offset-lg2>
         <v-card>
           <v-img :src="product.img" height="300px"></v-img>
           <v-card-text>
