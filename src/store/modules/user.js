@@ -1,5 +1,5 @@
-import * as fb from 'firebase'
-
+import * as fb from 'firebase/app'
+import 'firebase/auth'
 class User {
   constructor(id) {
     this.id = id
@@ -51,6 +51,22 @@ export default {
           dispatch('notify/load', false, { root: true })
           dispatch('notify/statusError', err.message, { root: true })
           throw err
+        })
+    },
+    loginInUser({ commit }, user) {
+      fb.auth().onAuthStateChanged(user => {
+        if (user) {
+          commit('SET_USER', user.uid)
+        }
+      })
+      commit('SET_USER', user)
+    },
+    logoutUser({ commit }) {
+      return fb
+        .auth()
+        .signOut()
+        .then(() => {
+          commit('SET_USER', null)
         })
     }
   }

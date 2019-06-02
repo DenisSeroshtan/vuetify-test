@@ -17,6 +17,16 @@
             <v-list-tile-title>{{ link.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile v-if="user" @click="logoutUser()">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+
+          <v-list-tile-content>
+            <v-list-tile-title>Выход</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app dark color="light-blue accent-2">
@@ -32,6 +42,9 @@
         <v-btn :to="link.url" flat dark v-for="link in links" :key="link.title">
           <v-icon left>{{ link.icon }}</v-icon>
           {{ link.title }}
+        </v-btn>
+        <v-btn v-if="user" @click="logoutUser()" flat dark>
+          <v-icon left>exit_to_app</v-icon>Выход
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -54,38 +67,48 @@ export default {
   data() {
     return {
       timeout: false,
-      drawer: false,
-      links: [
-        {
-          title: 'Login',
-          icon: 'lock',
-          url: '/login'
-        },
-        {
-          title: 'Registration',
-          icon: 'face',
-          url: '/registration'
-        },
-        {
-          title: 'Orders',
-          icon: 'bookmark_border',
-          url: '/orders'
-        },
-        {
-          title: 'New ad',
-          icon: 'note_add',
-          url: '/new'
-        },
-        {
-          title: 'My add',
-          icon: 'list',
-          url: '/list'
-        }
-      ]
+      drawer: false
     }
   },
   computed: {
-    ...mapGetters('notify', ['error'])
+    ...mapGetters('notify', ['error']),
+    ...mapGetters('user', ['user']),
+    links() {
+      let links = []
+      if (this.user) {
+        links = [
+          {
+            title: 'Orders',
+            icon: 'bookmark_border',
+            url: '/orders'
+          },
+          {
+            title: 'New ad',
+            icon: 'note_add',
+            url: '/new'
+          },
+          {
+            title: 'My add',
+            icon: 'list',
+            url: '/list'
+          }
+        ]
+      } else {
+        links = [
+          {
+            title: 'Login',
+            icon: 'lock',
+            url: '/login'
+          },
+          {
+            title: 'Registration',
+            icon: 'face',
+            url: '/registration'
+          }
+        ]
+      }
+      return links
+    }
   },
   watch: {
     error() {
@@ -107,7 +130,15 @@ export default {
       this.$router.push({
         name: 'home'
       })
+    },
+    logoutUser() {
+      this.$store.dispatch('user/logoutUser').then(() => {
+        this.$router.push({ name: 'home' })
+      })
     }
+  },
+  created() {
+    this.$store.dispatch('user/loginInUser')
   }
 }
 </script>
