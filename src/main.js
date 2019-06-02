@@ -8,6 +8,7 @@ import 'vuetify/dist/vuetify.min.css'
 import colors from 'vuetify/es5/util/colors'
 
 import * as fb from 'firebase/app'
+import 'firebase/auth'
 
 Vue.use(Vuetify, {
   theme: {

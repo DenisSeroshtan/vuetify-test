@@ -39,12 +39,21 @@
       <router-view></router-view>
     </v-content>
     <v-footer app></v-footer>
+    <template v-if="error">
+      <v-snackbar :value="true" bottom right multi-line>
+        {{ error }}
+        <v-btn color="error" flat @click="clearError()">✕</v-btn>
+      </v-snackbar>
+    </template>
   </v-app>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import { setTimeout } from 'timers'
 export default {
   data() {
     return {
+      timeout: false,
       drawer: false,
       links: [
         {
@@ -75,7 +84,25 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters('notify', ['error'])
+  },
+  watch: {
+    error() {
+      setTimeout(() => {
+        if (this.error != null) {
+          this.clearError()
+        }
+      }, 5000)
+    }
+  },
   methods: {
+    showError() {
+      this.err = !this.err
+    },
+    clearError() {
+      this.$store.dispatch('notify/statusError', null)
+    },
     toHome() {
       this.$router.push({
         name: 'home'

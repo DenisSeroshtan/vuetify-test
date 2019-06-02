@@ -36,6 +36,22 @@ export default {
           dispatch('notify/statusError', err.message, { root: true })
           throw err
         })
+    },
+    authUser({ commit, dispatch }, { email, password }) {
+      dispatch('notify/statusError', null, { root: true })
+      dispatch('notify/load', true, { root: true })
+      return fb
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(user => {
+          commit('SET_USER', new User(user.uid))
+          dispatch('notify/load', false, { root: true })
+        })
+        .catch(err => {
+          dispatch('notify/load', false, { root: true })
+          dispatch('notify/statusError', err.message, { root: true })
+          throw err
+        })
     }
   }
 }

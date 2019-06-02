@@ -1,11 +1,17 @@
 <template>
   <div>
-    <v-container fluid pl-0 pr-0 pt-0>
-      <v-progress-linear
-        :indeterminate="true"
-        v-show="loading"
-      ></v-progress-linear>
-    </v-container>
+    <v-dialog v-model="loading" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          Подождите
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md6 lg4>
@@ -95,7 +101,7 @@ export default {
           .dispatch('user/registerUser', user)
           .then(() => {
             this.$refs.formLogin.reset()
-            this.$router.push({ name: 'home' })
+            // this.$router.push({ name: 'home' })
           })
           .catch(err => console.log(err))
       }
