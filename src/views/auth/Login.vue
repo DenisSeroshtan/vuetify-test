@@ -90,6 +90,14 @@ export default {
           .catch(() => {})
       }
     }
+  },
+  created() {
+    if (this.$route.query['loginErr']) {
+      this.$store.dispatch(
+        'notify/statusError',
+        'Для дальнейшего просмотра необходима регистрация'
+      )
+    }
   }
 }
 </script>

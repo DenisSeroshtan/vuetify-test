@@ -9,6 +9,16 @@ import AdList from './views/ads/AdList.vue'
 import AdNew from './views/ads/AdNew.vue'
 import Ad from './views/ads/Ad.vue'
 
+import store from '@/store/store'
+
+function addGuard(to, from, next) {
+  if (store.state.user.user) {
+    next()
+  } else {
+    next('/login?loginErr=true')
+  }
+}
+
 Vue.use(Router)
 
 export default new Router({
@@ -31,23 +41,27 @@ export default new Router({
     {
       component: Orders,
       name: 'orders',
-      path: '/orders'
+      path: '/orders',
+      beforeEnter: addGuard
     },
     {
       component: AdList,
       name: 'list',
-      path: '/list'
+      path: '/list',
+      beforeEnter: addGuard
     },
     {
       component: Ad,
       name: 'ad',
       path: '/ad/:id',
-      props: true
+      props: true,
+      beforeEnter: addGuard
     },
     {
       component: AdNew,
       name: 'newAd',
-      path: '/new'
+      path: '/new',
+      beforeEnter: addGuard
     }
   ],
   mode: 'history'
