@@ -12,11 +12,14 @@ import Ad from './views/ads/Ad.vue'
 import store from '@/store/store'
 
 function addGuard(to, from, next) {
-  if (store.state.user.user) {
-    next()
-  } else {
-    next('/login?loginErr=true')
-  }
+  store
+    .dispatch('user/loginInUser')
+    .then(() => {
+      next()
+    })
+    .catch(() => {
+      next('/login?loginErr=true')
+    })
 }
 
 Vue.use(Router)
