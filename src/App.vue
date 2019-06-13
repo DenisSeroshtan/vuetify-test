@@ -1,5 +1,11 @@
 <template>
   <v-app>
+    <v-progress-linear
+      color="success"
+      class="progress"
+      :indeterminate="true"
+      v-show="loading"
+    ></v-progress-linear>
     <v-navigation-drawer
       temporary
       app
@@ -71,7 +77,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('notify', ['error']),
+    ...mapGetters('notify', ['error', 'loading']),
     ...mapGetters('user', ['user']),
     links() {
       let links = []
@@ -93,7 +99,7 @@ export default {
             url: '/list'
           }
         ]
-      } else {
+      } else if (!this.user && !this.loading) {
         links = [
           {
             title: 'Login',
@@ -145,5 +151,12 @@ export default {
 <style lang="scss" scoped>
 .pointer {
   cursor: ponter;
+}
+.progress {
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
 }
 </style>

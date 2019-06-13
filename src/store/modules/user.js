@@ -73,13 +73,26 @@ export default {
           throw err
         })
     },
-    loginInUser({ commit }) {
+    loginInUser({ commit, dispatch }) {
       return new Promise((resolve, reject) => {
+        dispatch('notify/statusError', null, {
+          root: true
+        })
+        dispatch('notify/load', true, {
+          root: true
+        })
+
         fb.auth().onAuthStateChanged(user => {
           if (user) {
             commit('SET_USER', new User(user.uid))
+            dispatch('notify/load', false, {
+              root: true
+            })
             resolve()
           } else {
+            dispatch('notify/load', false, {
+              root: true
+            })
             reject()
           }
         })

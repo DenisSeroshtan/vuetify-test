@@ -1,12 +1,5 @@
 <template>
   <div>
-    <v-progress-linear
-      color="success"
-      class="progress"
-      :indeterminate="true"
-      v-show="loading"
-    ></v-progress-linear>
-
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md6 lg4>
@@ -101,12 +94,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.progress {
-  margin: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99999;
-}
-</style>
+<style lang="scss" scoped></style>
