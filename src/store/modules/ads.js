@@ -1,3 +1,23 @@
+import * as fb from 'firebase/app'
+import 'firebase/database'
+
+class Product {
+  constructor({
+    title,
+    desc,
+    userId = null,
+    img = '',
+    promo = false,
+    id = null
+  }) {
+    this.title = title
+    this.desc = desc
+    this.userId = userId
+    this.img = img
+    this.promo = promo
+    this.id = id
+  }
+}
 export default {
   namespaced: true,
   state: {
@@ -45,8 +65,24 @@ export default {
     }
   },
   actions: {
-    createAd({ commit }, product) {
-      commit('SET_PRODUCT', product)
+    async createAd({ commit, dispatch }, product) {
+      dispatch('notify/load', true, { root: true })
+      dispatch('notify/statusError', null, { root: true })
+      try {
+        let newProduct = new Product(product)
+        const res = await fb
+          .database()
+          .ref('ad-test')
+          .push(newProduct)
+
+        dispatch('notify/load', false, { root: true })
+
+        commit('SET_PRODUCT', { ...newProduct, id: res.key })
+      } catch (e) {
+        dispatch('notify/load', false, { root: true })
+        dispatch('notify/statusError', e.message, { root: true })
+        throw e
+      }
     }
   }
 }

@@ -97,7 +97,6 @@ export default {
           }
         })
       })
-      // commit('SET_USER', user)
     },
     logoutUser({ commit }) {
       return fb

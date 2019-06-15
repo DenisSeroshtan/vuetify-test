@@ -54,6 +54,7 @@
   </v-container>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -67,21 +68,32 @@ export default {
       }
     }
   },
-
+  computed: {
+    ...mapState('user', ['user'])
+  },
   methods: {
     createAd() {
       if (this.$refs.formLogin.validate()) {
-        const id = Math.floor(Math.random() * 100000)
+        // const id = Math.floor(Math.random() * 100000)
+        console.log(this.user)
         const ad = {
           title: this.title,
           desc: this.description,
+          userId: this.user.id,
           promo: this.promo,
           img:
-            'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200',
-          id
+            'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200'
         }
-        this.$store.dispatch('ads/createAd', ad)
-        this.$refs.formLogin.reset()
+        this.$store
+          .dispatch('ads/createAd', ad)
+          .then(() => {
+            this.$refs.formLogin.reset()
+
+            this.$router.push({ name: 'list' })
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
     }
   }
