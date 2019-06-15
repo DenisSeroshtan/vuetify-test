@@ -22,27 +22,27 @@ export default {
   namespaced: true,
   state: {
     products: [
-      {
-        title: 'title 1',
-        desc: 'some description 2',
-        promo: false,
-        img: 'https://picsum.photos/id/1/1200/400',
-        id: 1
-      },
-      {
-        title: 'title 2',
-        desc: 'some description 1',
-        promo: true,
-        img: 'https://picsum.photos/id/10/1200/400',
-        id: 2
-      },
-      {
-        title: 'title 3',
-        desc: 'some description 3',
-        promo: true,
-        img: 'https://picsum.photos/id/100/1200/400',
-        id: 3
-      }
+      // {
+      //   title: 'title 1',
+      //   desc: 'some description 2',
+      //   promo: false,
+      //   img: 'https://picsum.photos/id/1/1200/400',
+      //   id: 1
+      // },
+      // {
+      //   title: 'title 2',
+      //   desc: 'some description 1',
+      //   promo: true,
+      //   img: 'https://picsum.photos/id/10/1200/400',
+      //   id: 2
+      // },
+      // {
+      //   title: 'title 3',
+      //   desc: 'some description 3',
+      //   promo: true,
+      //   img: 'https://picsum.photos/id/100/1200/400',
+      //   id: 3
+      // }
     ]
   },
   getters: {
@@ -62,6 +62,9 @@ export default {
   mutations: {
     SET_PRODUCT(state, product) {
       state.products.push(product)
+    },
+    LOAD_PRODUCTS(state, products) {
+      state.products = products
     }
   },
   actions: {
@@ -83,6 +86,38 @@ export default {
         dispatch('notify/statusError', e.message, { root: true })
         throw e
       }
+    },
+    fetchProduct({ commit, dispatch }) {
+      const ref = fb.database().ref('ad-test')
+
+      dispatch('notify/load', true, { root: true })
+      dispatch('notify/statusError', null, { root: true })
+
+      return ref
+        .once('value')
+        .then(data => {
+          const valProduct = data.val()
+          let newProducts = []
+          Object.keys(valProduct).forEach(key => {
+            const product = new Product({
+              title: valProduct[key].title,
+              desc: valProduct[key].desc,
+              promo: valProduct[key].promo,
+              id: key,
+              userId: valProduct[key].userId,
+              img: valProduct[key].img
+            })
+            newProducts.push(product)
+
+            commit('LOAD_PRODUCTS', newProducts)
+            dispatch('notify/load', false, { root: true })
+          })
+        })
+        .catch(e => {
+          dispatch('notify/load', false, { root: true })
+          dispatch('notify/statusError', e.message, { root: true })
+          throw e
+        })
     }
   }
 }

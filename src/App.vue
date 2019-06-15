@@ -13,7 +13,7 @@
       dark
       class="blue lighten-3"
     >
-      <v-list>
+      <v-list v-if="!loading">
         <v-list-tile v-for="link in links" :key="link.title" :to="link.url">
           <v-list-tile-action>
             <v-icon>{{ link.icon }}</v-icon>
@@ -44,7 +44,7 @@
         <span class="pointer">App</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
+      <v-toolbar-items class="hidden-sm-and-down" v-if="!loading">
         <v-btn :to="link.url" flat dark v-for="link in links" :key="link.title">
           <v-icon left>{{ link.icon }}</v-icon>
           {{ link.title }}
@@ -55,7 +55,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <router-view></router-view>
+      <router-view v-if="!loading"></router-view>
     </v-content>
     <v-footer app></v-footer>
     <template v-if="error">
@@ -99,7 +99,7 @@ export default {
             url: '/list'
           }
         ]
-      } else if (!this.user && !this.loading) {
+      } else {
         links = [
           {
             title: 'Login',
@@ -144,7 +144,8 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('user/loginInUser')
+    // this.$store.dispatch('user/loginInUser')
+    this.$store.dispatch('ads/fetchProduct')
   }
 }
 </script>
