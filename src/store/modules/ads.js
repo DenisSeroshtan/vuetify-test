@@ -87,37 +87,35 @@ export default {
         throw e
       }
     },
-    fetchProduct({ commit, dispatch }) {
-      const ref = fb.database().ref('ad-test')
-
+    async fetchProduct({ commit, dispatch }) {
       dispatch('notify/load', true, { root: true })
       dispatch('notify/statusError', null, { root: true })
+      try {
+        const ref = await fb
+          .database()
+          .ref('ad-test')
+          .once('value')
 
-      return ref
-        .once('value')
-        .then(data => {
-          const valProduct = data.val()
-          let newProducts = []
-          Object.keys(valProduct).forEach(key => {
-            const product = new Product({
-              title: valProduct[key].title,
-              desc: valProduct[key].desc,
-              promo: valProduct[key].promo,
-              id: key,
-              userId: valProduct[key].userId,
-              img: valProduct[key].img
-            })
-            newProducts.push(product)
-
-            commit('LOAD_PRODUCTS', newProducts)
-            dispatch('notify/load', false, { root: true })
+        const valProduct = ref.val()
+        let newProducts = []
+        Object.keys(valProduct).forEach(key => {
+          const product = new Product({
+            title: valProduct[key].title,
+            desc: valProduct[key].desc,
+            promo: valProduct[key].promo,
+            id: key,
+            userId: valProduct[key].userId,
+            img: valProduct[key].img
           })
+          newProducts.push(product)
         })
-        .catch(e => {
-          dispatch('notify/load', false, { root: true })
-          dispatch('notify/statusError', e.message, { root: true })
-          throw e
-        })
+        dispatch('notify/load', false, { root: true })
+        commit('LOAD_PRODUCTS', newProducts)
+      } catch (e) {
+        dispatch('notify/load', false, { root: true })
+        dispatch('notify/statusError', e.message, { root: true })
+        throw e
+      }
     }
   }
 }

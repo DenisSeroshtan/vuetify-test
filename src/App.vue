@@ -54,8 +54,15 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
-    <v-content>
-      <router-view v-if="!loading"></router-view>
+    <v-content v-if="!loading">
+      <transition
+        name="custom-classes-transition"
+        enter-active-class="animated lightSpeedIn"
+        leave-active-class="animated lightSpeedOut"
+        mode="out-in"
+      >
+        <router-view></router-view>
+      </transition>
     </v-content>
     <v-footer app></v-footer>
     <template v-if="error">
@@ -144,7 +151,7 @@ export default {
     }
   },
   created() {
-    // this.$store.dispatch('user/loginInUser')
+    this.$store.dispatch('user/loginInUser')
     this.$store.dispatch('ads/fetchProduct')
   }
 }
