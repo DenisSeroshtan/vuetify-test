@@ -21,15 +21,22 @@
         </v-form>
         <v-layout row mb-3>
           <v-flex xs12>
-            <v-btn class="warning">
+            <v-btn class="warning" @click="triggerInput">
               Upload
               <v-icon right dark>cloud_upload</v-icon>
             </v-btn>
+            <input
+              type="file"
+              style="display:none"
+              accept="image/*"
+              ref="fileInput"
+              @change="uploadFile"
+            />
           </v-flex>
         </v-layout>
         <v-layout row>
           <v-flex xs12>
-            <img src alt height="120" />
+            <img :src="imageSrc" alt width="120" v-if="imageSrc" />
           </v-flex>
         </v-layout>
         <v-layout row class="mb-3">
@@ -62,6 +69,8 @@ export default {
       title: '',
       description: '',
       promo: '',
+      image: null,
+      imageSrc: '',
       rules: {
         required: value => !!value || 'Поле обязательно для заполнения',
         counter: value => (value && value.length >= 3) || 'Мин. 3 симоволов'
@@ -74,27 +83,38 @@ export default {
   methods: {
     createAd() {
       if (this.$refs.formLogin.validate()) {
-        // const id = Math.floor(Math.random() * 100000)
-        console.log(this.user)
         const ad = {
           title: this.title,
           desc: this.description,
           userId: this.user.id,
           promo: this.promo,
-          img:
-            'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200'
+          img: this.image || null
         }
         this.$store
           .dispatch('ads/createAd', ad)
           .then(() => {
-            this.$refs.formLogin.reset()
-
+            // this.$refs.formLogin.reset()
             this.$router.push({ name: 'list' })
           })
           .catch(e => {
             console.log(e)
           })
       }
+    },
+    triggerInput() {
+      this.$refs.fileInput.click()
+    },
+    // загрузка изображения
+    uploadFile() {
+      const file = event.target.files[0]
+
+      const reader = new FileReader()
+      reader.onload = () => {
+        this.imageSrc = reader.result
+      }
+      reader.readAsDataURL(file)
+
+      this.image = file
     }
   }
 }

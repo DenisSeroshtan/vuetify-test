@@ -21,9 +21,11 @@ export default {
     }
   },
   actions: {
+    // состояние загрузки
     load({ commit }, status) {
       commit('SET_LOADING', status)
     },
+    // отображение ошибок
     statusError({ commit }, error) {
       commit('SET_ERROR', error)
     }

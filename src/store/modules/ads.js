@@ -1,5 +1,6 @@
 import * as fb from 'firebase/app'
 import 'firebase/database'
+import 'firebase/storage'
 
 class Product {
   constructor({
@@ -73,14 +74,40 @@ export default {
       dispatch('notify/statusError', null, { root: true })
       try {
         let newProduct = new Product(product)
+
         const res = await fb
           .database()
           .ref('ad-test')
           .push(newProduct)
 
-        dispatch('notify/load', false, { root: true })
+        let img
+        if (newProduct.img) {
+          const imageFileName = newProduct.img.name
+          const imgExt = imageFileName.slice(imageFileName.lastIndexOf('.'))
+          const linkStorage = `ad-test/${res.key}${imgExt}`
 
-        commit('SET_PRODUCT', { ...newProduct, id: res.key })
+          const imgData = await fb
+            .storage()
+            .ref(linkStorage)
+            .put(newProduct.img)
+          img = await fb
+            .storage()
+            .ref()
+            .child(imgData.ref.fullPath)
+            .getDownloadURL()
+        } else {
+          img =
+            'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200'
+        }
+        await fb
+          .database()
+          .ref('ad-test')
+          .child(res.key)
+          .update({ img })
+        // загрузка изображения
+
+        commit('SET_PRODUCT', { ...newProduct, id: res.key, img })
+        dispatch('notify/load', false, { root: true })
       } catch (e) {
         dispatch('notify/load', false, { root: true })
         dispatch('notify/statusError', e.message, { root: true })

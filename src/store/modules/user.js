@@ -21,6 +21,7 @@ export default {
     }
   },
   actions: {
+    // регистраця пользователя
     registerUser({ commit, dispatch }, { email, password }) {
       dispatch('notify/statusError', null, {
         root: true
@@ -47,6 +48,7 @@ export default {
           throw err
         })
     },
+    // авторизация пользователя
     authUser({ commit, dispatch }, { email, password }) {
       dispatch('notify/statusError', null, {
         root: true
@@ -73,21 +75,21 @@ export default {
           throw err
         })
     },
+    // поддержка сессии польлзователся
     loginInUser({ commit, dispatch }) {
       return new Promise((resolve, reject) => {
         dispatch('notify/statusError', null, {
           root: true
         })
-        dispatch('notify/load', true, {
-          root: true
-        })
-
+        // dispatch('notify/load', true, {
+        //   root: true
+        // })
         fb.auth().onAuthStateChanged(user => {
           if (user) {
             commit('SET_USER', new User(user.uid))
-            dispatch('notify/load', false, {
-              root: true
-            })
+            // dispatch('notify/load', false, {
+            //   root: true
+            // })
             resolve()
           } else {
             dispatch('notify/load', false, {
@@ -98,6 +100,7 @@ export default {
         })
       })
     },
+    // выход с текущей сессии пользователся
     logoutUser({ commit }) {
       return fb
         .auth()

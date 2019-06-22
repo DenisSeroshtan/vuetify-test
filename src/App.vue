@@ -151,7 +151,9 @@ export default {
     }
   },
   created() {
+    // поддержка сессии пользователя
     this.$store.dispatch('user/loginInUser')
+    // получение списка продуктов с firebase
     this.$store.dispatch('ads/fetchProduct')
   }
 }
