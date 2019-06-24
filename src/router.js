@@ -65,6 +65,12 @@ export default new Router({
       name: 'newAd',
       path: '/new',
       beforeEnter: addGuard
+    },
+    {
+      path: '*',
+      redirect: {
+        name: 'home'
+      }
     }
   ],
   mode: 'history'

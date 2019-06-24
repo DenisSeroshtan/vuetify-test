@@ -1,7 +1,7 @@
 import * as fb from 'firebase/app'
 import 'firebase/database'
 import 'firebase/storage'
-
+// конструктор для нового объекта с продуктом
 class Product {
   constructor({
     title,
@@ -22,29 +22,7 @@ class Product {
 export default {
   namespaced: true,
   state: {
-    products: [
-      // {
-      //   title: 'title 1',
-      //   desc: 'some description 2',
-      //   promo: false,
-      //   img: 'https://picsum.photos/id/1/1200/400',
-      //   id: 1
-      // },
-      // {
-      //   title: 'title 2',
-      //   desc: 'some description 1',
-      //   promo: true,
-      //   img: 'https://picsum.photos/id/10/1200/400',
-      //   id: 2
-      // },
-      // {
-      //   title: 'title 3',
-      //   desc: 'some description 3',
-      //   promo: true,
-      //   img: 'https://picsum.photos/id/100/1200/400',
-      //   id: 3
-      // }
-    ]
+    products: []
   },
   getters: {
     products(state) {
@@ -74,12 +52,12 @@ export default {
       dispatch('notify/statusError', null, { root: true })
       try {
         let newProduct = new Product(product)
-
+        // добавляем в базу данных новый продукт
         const res = await fb
           .database()
           .ref('ad-test')
           .push(newProduct)
-
+        // добавляем изображение в хранилище
         let img
         if (newProduct.img) {
           const imageFileName = newProduct.img.name
@@ -99,6 +77,7 @@ export default {
           img =
             'https://avatars.mds.yandex.net/get-pdb/163339/719f75e4-28db-4c91-9b9f-f046ed586ec5/s1200'
         }
+        // добавляем ссылку на изображение в базу данных
         await fb
           .database()
           .ref('ad-test')
@@ -118,11 +97,12 @@ export default {
       dispatch('notify/load', true, { root: true })
       dispatch('notify/statusError', null, { root: true })
       try {
+        // ссылаемся на базу данных
         const ref = await fb
           .database()
           .ref('ad-test')
           .once('value')
-
+        // получаем объект с ключами по id
         const valProduct = ref.val()
         let newProducts = []
         Object.keys(valProduct).forEach(key => {
