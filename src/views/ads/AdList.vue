@@ -2,10 +2,10 @@
   <v-container grid-list-lg>
     <v-layout row>
       <v-flex xs12 sm8 offser-sm2>
-        <h1 class="text--secondary mb-3">Список заказов</h1>
+        <h1 class="text--secondary mb-3">Мои обЪявления</h1>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-layout row wrap v-if="products.length > 0">
       <v-flex xs12 sm6 v-for="product in products" :key="product.id">
         <v-card class="evalation-6 mb-3">
           <v-layout row>
@@ -30,6 +30,14 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-layout row wrap v-else>
+      <v-flex>
+        <h3 class="text-secondary mb-3">У вас еще нет ни одного обЪявления</h3>
+        <router-link :to="{ name: 'newAd' }" class="accent-link"
+          >Добавить объявление</router-link
+        >
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 <script>
@@ -41,3 +49,12 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.accent-link {
+  color: #4fc3f7;
+  font-size: 18px;
+  &:hover {
+    text-decoration: none;
+  }
+}
+</style>

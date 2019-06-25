@@ -10,8 +10,10 @@
           </v-card-text>
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
-            <editModal :product="product" />
-            <v-btn large class="success">Купить</v-btn>
+            <editModal :product="product" v-if="userId == product.userId" />
+            <v-btn large class="success" v-else-if="userId != product.userId"
+              >Купить</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -26,6 +28,9 @@ export default {
   },
   props: ['id'],
   computed: {
+    userId() {
+      return this.$store.getters['user/user'].id
+    },
     product() {
       const id = this.id
       return this.$store.getters['ads/getProductById'](id)

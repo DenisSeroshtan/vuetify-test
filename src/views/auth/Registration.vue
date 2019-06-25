@@ -100,8 +100,8 @@ export default {
         this.$store
           .dispatch('user/registerUser', user)
           .then(() => {
-            this.$refs.formLogin.reset()
-            // this.$router.push({ name: 'home' })
+            // this.$refs.formLogin.reset()
+            this.$router.push({ name: 'home' })
           })
           .catch(err => console.log(err))
       }

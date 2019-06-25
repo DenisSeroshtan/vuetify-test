@@ -31,8 +31,10 @@ export default {
     promoProducts(state) {
       return state.products.filter(product => product.promo)
     },
-    selfProducts(state) {
-      return state.products
+    selfProducts(state, getter, rootState) {
+      return state.products.filter(
+        product => product.userId == rootState.user.user.id
+      )
     },
     getProductById: state => id => {
       return state.products.find(product => product.id === id)
