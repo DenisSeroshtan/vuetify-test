@@ -44,6 +44,11 @@ export default {
     },
     LOAD_PRODUCTS(state, products) {
       state.products = products
+    },
+    UPDATE_PRODUCT(state, { title, desc, id }) {
+      let innerProduct = state.products.find(product => product.id == id)
+      innerProduct.title = title
+      innerProduct.desc = desc
     }
   },
   actions: {
@@ -118,6 +123,27 @@ export default {
         })
         dispatch('notify/load', false, { root: true })
         commit('LOAD_PRODUCTS', newProducts)
+      } catch (e) {
+        dispatch('notify/load', false, { root: true })
+        dispatch('notify/statusError', e.message, { root: true })
+        throw e
+      }
+    },
+    async updateProduct({ commit, dispatch }, { title, desc, id }) {
+      dispatch('notify/load', true, { root: true })
+      dispatch('notify/statusError', null, { root: true })
+      try {
+        // update product database
+        await fb
+          .database()
+          .ref('ad-test')
+          .child(id)
+          .update({
+            title,
+            desc
+          })
+        dispatch('notify/load', false, { root: true })
+        commit('UPDATE_PRODUCT', { title, desc, id })
       } catch (e) {
         dispatch('notify/load', false, { root: true })
         dispatch('notify/statusError', e.message, { root: true })
