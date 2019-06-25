@@ -10,7 +10,7 @@
           </v-card-text>
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
-            <editModal />
+            <editModal :product="product" />
             <v-btn large class="success">Купить</v-btn>
           </v-card-actions>
         </v-card>
