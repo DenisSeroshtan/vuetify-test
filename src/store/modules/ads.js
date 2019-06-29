@@ -29,12 +29,18 @@ export default {
       return state.products
     },
     promoProducts(state) {
+      // объявления для промо-слайдера
       return state.products.filter(product => product.promo)
     },
     selfProducts(state, getter, rootState) {
-      return state.products.filter(
-        product => product.userId == rootState.user.user.id
-      )
+      // находим свои объявления
+      const user = rootState.user.user
+      let products = []
+      if (user != null) {
+        products = state.products.filter(product => product.userId == user.id)
+      }
+
+      return products
     },
     getProductById: state => id => {
       return state.products.find(product => product.id === id)
