@@ -35,10 +35,13 @@
         class="hidden-md-and-up"
       ></v-toolbar-side-icon>
       <v-toolbar-title @click="toHome">
-        <span class="pointer">Market</span>
+        <span style="cursor: pointer">Market</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down" v-if="!loading">
+        <v-btn to="/" flat dark v-if="!statusHome">
+          <v-icon left>home</v-icon>На главную
+        </v-btn>
         <v-btn :to="link.url" flat dark v-for="link in links" :key="link.title">
           <v-icon left>{{ link.icon }}</v-icon>
           {{ link.title }}
@@ -54,6 +57,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  props: ['namePath'],
   data() {
     return {
       drawer: false
@@ -62,6 +66,9 @@ export default {
   computed: {
     ...mapGetters('notify', ['error', 'loading']),
     ...mapGetters('user', ['user']),
+    statusHome() {
+      return this.$route.name === 'home'
+    },
     links() {
       let links = []
       if (this.user) {
