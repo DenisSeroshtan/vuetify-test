@@ -11,8 +11,8 @@
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
             <editModal :product="product" v-if="userId == product.userId" />
-            <v-btn large class="success" v-else-if="userId != product.userId"
-              >Купить</v-btn
+            <buyModal v-else-if="userId != product.userId" :product="product"
+              >Купить</buyModal
             >
           </v-card-actions>
         </v-card>
@@ -22,9 +22,11 @@
 </template>
 <script>
 import editModal from '@/components/EditModal'
+import buyModal from '@/components/BuyModal'
 export default {
   components: {
-    editModal
+    editModal,
+    buyModal
   },
   props: ['id'],
   computed: {
