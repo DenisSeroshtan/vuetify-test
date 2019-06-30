@@ -61,7 +61,9 @@ export default {
     // получение списка продуктов с firebase
     this.$store.dispatch('ads/fetchProduct')
     // поддержка сессии пользователя
-    // this.$store.dispatch('user/loginInUser')
+    this.$store
+      .dispatch('user/loginInUser')
+      .catch(() => console.log('user unregister'))
   }
 }
 </script>

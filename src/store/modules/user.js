@@ -76,25 +76,13 @@ export default {
         })
     },
     // поддержка сессии польлзователся
-    loginInUser({ commit, dispatch }) {
+    loginInUser({ commit }) {
       return new Promise((resolve, reject) => {
-        // dispatch('notify/statusError', null, {
-        //   root: true
-        // })
-        // dispatch('notify/load', true, {
-        //   root: true
-        // })
         fb.auth().onAuthStateChanged(user => {
           if (user) {
             commit('SET_USER', new User(user.uid))
-            // dispatch('notify/load', false, {
-            //   root: true
-            // })
             resolve()
           } else {
-            // dispatch('notify/load', false, {
-            //   root: true
-            // })
             reject()
           }
         })

@@ -33,16 +33,16 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
+                class="mr-2"
                 :to="{ name: 'ad', params: { id: product.id } }"
                 raised
                 dark
                 color="orange"
                 >Открыть</v-btn
               >
-              <!-- <buyModal v-if="userId != product.userId" :product="product"
+              <buyModal v-if="userId != product.userId" :product="product"
                 >Купить</buyModal
-              >-->
-              <!-- <v-btn raised dark color="light-blue accent-2">Купить</v-btn> -->
+              >
             </v-card-actions>
           </v-card>
         </v-flex>
