@@ -11,7 +11,10 @@
           <v-card-actions class="pa-3">
             <v-spacer></v-spacer>
             <editModal :product="product" v-if="userId == product.userId" />
-            <buyModal v-else-if="userId != product.userId" :product="product"
+            <buyModal
+              normal
+              v-else-if="userId != product.userId"
+              :product="product"
               >Купить</buyModal
             >
           </v-card-actions>
@@ -31,7 +34,8 @@ export default {
   props: ['id'],
   computed: {
     userId() {
-      return this.$store.getters['user/user'].id
+      const user = this.$store.getters['user/user']
+      return user != null ? user.id : user
     },
     product() {
       const id = this.id

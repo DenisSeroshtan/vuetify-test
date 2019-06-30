@@ -1,40 +1,26 @@
 <template>
-  <v-layout justify-end mr-2>
-    <v-btn large class="warning" flat @click.stop="dialog = true"
-      >Редактировать</v-btn
-    >
+  <div mr-2>
+    <v-btn large class="warning" flat @click.stop="dialog = true">Редактировать</v-btn>
 
     <v-dialog v-model="dialog" max-width="500">
       <v-layout>
         <v-flex>
           <v-card>
             <v-card-text>
-              <v-text-field
-                name="Заголовок"
-                label="Заголовок"
-                type="text"
-                v-model="title"
-              ></v-text-field>
+              <v-text-field name="Заголовок" label="Заголовок" type="text" v-model="title"></v-text-field>
               <v-divider></v-divider>
-              <v-textarea
-                name="Описание"
-                label="Описание"
-                type="text"
-                v-model="desc"
-              ></v-textarea>
+              <v-textarea name="Описание" label="Описание" type="text" v-model="desc"></v-textarea>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn depressed flat="flat" @click="dialog = false"
-                >Отменить</v-btn
-              >
+              <v-btn depressed flat="flat" @click="dialog = false">Отменить</v-btn>
               <v-btn class="success" @click="onSave()">Сохранить</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
     </v-dialog>
-  </v-layout>
+  </div>
 </template>
 <script>
 export default {

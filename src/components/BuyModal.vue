@@ -1,6 +1,13 @@
 <template>
-  <v-layout justify-end>
-    <v-btn large class="success" flat @click.stop="dialog = true">Купить</v-btn>
+  <div>
+    <v-btn
+      rised
+      dark
+      :large="!normal"
+      color="light-blue accent-2"
+      @click.stop="dialog = true"
+      >Купить</v-btn
+    >
 
     <v-dialog v-model="dialog" max-width="500">
       <v-layout>
@@ -32,11 +39,15 @@
         </v-flex>
       </v-layout>
     </v-dialog>
-  </v-layout>
+  </div>
 </template>
 <script>
 export default {
   props: {
+    normal: {
+      required: false,
+      default: true
+    },
     product: {
       type: [Object, Array],
       required: true

@@ -57,8 +57,7 @@ export default new Router({
       component: Ad,
       name: 'ad',
       path: '/ad/:id',
-      props: true,
-      beforeEnter: addGuard
+      props: true
     },
     {
       component: AdNew,

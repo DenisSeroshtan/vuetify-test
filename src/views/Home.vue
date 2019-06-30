@@ -23,7 +23,7 @@
       <v-layout row wrap>
         <v-flex v-for="product in products" :key="product.id" xs12 sm6 lg4>
           <v-card>
-            <v-img :src="product.img" class="card-img"></v-img>
+            <v-img :src="product.img" class="card-img" height="300px"></v-img>
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">{{ product.title }}</h3>
@@ -39,7 +39,10 @@
                 color="orange"
                 >Открыть</v-btn
               >
-              <v-btn raised dark color="light-blue accent-2">Купить</v-btn>
+              <!-- <buyModal v-if="userId != product.userId" :product="product"
+                >Купить</buyModal
+              >-->
+              <!-- <v-btn raised dark color="light-blue accent-2">Купить</v-btn> -->
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -49,8 +52,16 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import buyModal from '@/components/BuyModal'
 export default {
+  components: {
+    buyModal
+  },
   computed: {
+    userId() {
+      const user = this.$store.getters['user/user']
+      return user != null ? user.id : user
+    },
     ...mapGetters('ads', ['products', 'promoProducts'])
   }
 }

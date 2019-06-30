@@ -49,22 +49,19 @@ export default {
         if (val != null) {
           this.clearError()
         }
-      }, 5000)
+      }, 4000)
     }
   },
   methods: {
-    showError() {
-      this.err = !this.err
-    },
     clearError() {
       this.$store.dispatch('notify/statusError', null)
     }
   },
   created() {
-    // поддержка сессии пользователя
-    this.$store.dispatch('user/loginInUser')
     // получение списка продуктов с firebase
     this.$store.dispatch('ads/fetchProduct')
+    // поддержка сессии пользователя
+    // this.$store.dispatch('user/loginInUser')
   }
 }
 </script>

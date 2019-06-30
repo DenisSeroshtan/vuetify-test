@@ -32,7 +32,7 @@ export default {
       // объявления для промо-слайдера
       return state.products.filter(product => product.promo)
     },
-    selfProducts(state, getter, rootState) {
+    selfProducts(state, getters, rootState) {
       // находим свои объявления
       const user = rootState.user.user
       let products = []
@@ -150,8 +150,10 @@ export default {
             title,
             desc
           })
-        dispatch('notify/load', false, { root: true })
+
         commit('UPDATE_PRODUCT', { title, desc, id })
+        dispatch('notify/load', false, { root: true })
+        console.log()
       } catch (e) {
         dispatch('notify/load', false, { root: true })
         dispatch('notify/statusError', e.message, { root: true })

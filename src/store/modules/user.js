@@ -78,9 +78,9 @@ export default {
     // поддержка сессии польлзователся
     loginInUser({ commit, dispatch }) {
       return new Promise((resolve, reject) => {
-        dispatch('notify/statusError', null, {
-          root: true
-        })
+        // dispatch('notify/statusError', null, {
+        //   root: true
+        // })
         // dispatch('notify/load', true, {
         //   root: true
         // })
@@ -92,9 +92,9 @@ export default {
             // })
             resolve()
           } else {
-            dispatch('notify/load', false, {
-              root: true
-            })
+            // dispatch('notify/load', false, {
+            //   root: true
+            // })
             reject()
           }
         })
