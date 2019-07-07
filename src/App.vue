@@ -41,6 +41,7 @@ export default {
   },
   computed: {
     ...mapGetters('notify', ['error', 'loading']),
+    ...mapGetters('ads', ['products']),
     ...mapGetters('user', ['user'])
   },
   watch: {
@@ -59,7 +60,9 @@ export default {
   },
   created() {
     // получение списка продуктов с firebase
-    this.$store.dispatch('ads/fetchProduct')
+    if (this.products.length == 0) {
+      this.$store.dispatch('ads/fetchProduct')
+    }
     // поддержка сессии пользователя
     this.$store
       .dispatch('user/loginInUser')

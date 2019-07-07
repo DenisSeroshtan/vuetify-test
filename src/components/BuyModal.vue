@@ -90,7 +90,7 @@ export default {
       email: '',
       rules: {
         required: value => !!value || 'Поле обязательно для заполнения',
-        counter: value => (value && value.length >= 6) || 'Мин. 6 симоволов',
+        counter: value => (value && value.length >= 3) || 'Мин. 3 симоволов',
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Некорректный e-mail.'
