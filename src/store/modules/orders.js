@@ -2,13 +2,22 @@ import fb from 'firebase/app'
 import 'firebase/database'
 
 class Order {
-  constructor({ name, phone, email, productId, userId = null, done = false }) {
+  constructor({
+    name,
+    phone,
+    email,
+    productId,
+    userId = null,
+    done = false,
+    id = null
+  }) {
     this.name = name
     this.phone = phone
     this.email = email
     this.productId = productId
     this.userId = userId
     this.done = done
+    this.id = id
   }
 }
 export default {
@@ -59,7 +68,7 @@ export default {
       //   }, 1000)
       // })
     },
-    async fetchOrders({ commit, dispatch, rootState, rootGetters }) {
+    async fetchOrders({ commit, dispatch, rootGetters }) {
       const userId = rootGetters['user/user']
         ? rootGetters['user/user'].id
         : null
@@ -85,21 +94,52 @@ export default {
           .once('value')
         // получаем объект с ключами по id
         const orders = ref.val()
-        Object.keys(orders).forEach(key => {
-          const o = orders[key]
-          let dbOrder = new Order({
-            name: o.name,
-            phone: o.phone,
-            email: o.email,
-            productId: o.productId,
-            order: o.done
+        if (orders) {
+          Object.keys(orders).forEach(key => {
+            const o = orders[key]
+            let dbOrder = new Order({
+              name: o.name,
+              phone: o.phone,
+              email: o.email,
+              productId: o.productId,
+              done: o.done,
+              id: key
+            })
+            resultOrders.push(dbOrder)
           })
-          resultOrders.push(dbOrder)
-        })
+        }
         commit('ADD_ORDERS', resultOrders)
-        dispatch('notify/load', false, { root: true })
+        // dispatch('notify/load', false, { root: true })
       } catch (error) {
         dispatch('notify/load', false, { root: true })
+        dispatch('notify/statusError', error.message, { root: true })
+        throw error
+      }
+    },
+
+    async markOrder({ dispatch, rootGetters }, id) {
+      const userId = rootGetters['user/user']
+        ? rootGetters['user/user'].id
+        : null
+      console.log(userId)
+      if (!userId) {
+        dispatch(
+          'notify/statusError',
+          'Ошибка с получением заказов для данного пользователя',
+          { root: true }
+        )
+        return
+      }
+      dispatch('notify/statusError', null, { root: true })
+      try {
+        await fb
+          .database()
+          .ref(`user/${userId}/orders`)
+          .child(id)
+          .update({
+            done: true
+          })
+      } catch (error) {
         dispatch('notify/statusError', error.message, { root: true })
         throw error
       }
