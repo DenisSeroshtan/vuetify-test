@@ -111,7 +111,7 @@ export default {
             name: this.name,
             phone: this.phone,
             email: this.email,
-            id: this.product.id,
+            productId: this.product.id,
             userId: this.product.userId
           })
           .finally(() => {
